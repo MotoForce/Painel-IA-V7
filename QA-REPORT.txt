@@ -1,0 +1,13 @@
+Structural checks:
+{
+  "doctype": true,
+  "viewport": true,
+  "edge_function": true,
+  "ollama_tags": true,
+  "ollama_chat": true,
+  "no_openai_secret_value": true,
+  "no_google_secret_value": true,
+  "no_paid_auto_fallback": true
+}
+
+JavaScript syntax: OK

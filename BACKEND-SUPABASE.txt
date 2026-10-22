@@ -1,0 +1,15 @@
+Edge Function: painel-ia
+Projeto: Painel-Lima-Virtual
+Versão implantada: multiengine V7
+
+Segredos reconhecidos:
+GEMINI_API_KEY
+GEMINI_MODEL (padrão gemini-3.8-flash)
+OPENAI_API_KEY
+OPENAI_MODEL (padrão gpt-6.1-sol)
+
+Política automática do backend:
+auto => Gemini, se configurado.
+OpenAI => somente por seleção manual.
+
+Ollama é local e por isso é acessado diretamente pelo frontend.
