@@ -1,4 +1,4 @@
-# INKIS IA V8.1 — Inteligência Estendida Local
+# INKIS IA V9 — Completo
 
 A V8 amplia a qualidade das respostas sem depender de uma API paga por padrão.
 
@@ -92,3 +92,53 @@ Foram incorporados ao próprio aplicativo:
 Os dois documentos são acessíveis por links no rodapé e abrem em modais internos compatíveis com os modos claro e escuro.
 
 Observação: os textos são uma base operacional coerente com as funções atuais da aplicação. Caso o INKIS IA seja comercializado em escala, trate dados pessoais de terceiros, processe pagamentos, realize analytics ou passe a operar sob obrigações contratuais/regulatórias específicas, é recomendável revisão jurídica dos documentos.
+
+
+## Correção crítica V8.2
+
+Os logs reais do Supabase mostraram falhas `503 UNAVAILABLE` do Gemini 3.8 Flash em períodos de alta demanda.
+
+O backend `painel-ia` foi publicado como **versão 5-resilient**:
+- retry automático para erros transitórios;
+- Gemini 3.8 Flash permanece como principal;
+- fallback gratuito para `gemini-3.5-flash`;
+- nenhuma troca automática para OpenAI;
+- mensagens distintas para sobrecarga temporária e cota esgotada.
+
+A interface também foi tornada resiliente:
+- se a primeira resposta foi obtida e apenas a revisão/refinamento falhar, a resposta válida é preservada;
+- modos Profissional, Profundo e Auditoria não descartam mais conteúdo útil por falha de uma etapa posterior;
+- o painel identifica quando respondeu em “modo resiliente”.
+
+
+## Correção de cortes V8.3
+
+A V8.3 aplica uma revisão responsiva global para celulares Android, inclusive telas de 320–400 px:
+
+- `overflow-x` bloqueado no documento;
+- todos os grids usam `minmax(0, 1fr)`;
+- cards e textos recebem `min-width: 0`;
+- engines e modos de inteligência mudam para 1 coluna em celulares estreitos;
+- botões de Anexar/Buscar/Modelos reorganizam-se verticalmente quando necessário;
+- navegação inferior usa 5 colunas flexíveis sem largura fixa nos rótulos;
+- barra inferior respeita `safe-area-inset-bottom`;
+- conteúdo ganha espaço inferior suficiente para não ficar atrás da navegação;
+- modais ficam limitados à altura real da tela (`100dvh`);
+- rodapé legal respeita safe areas;
+- textos longos podem quebrar linha sem sair dos cards;
+- conflito antigo que forçava 2 colunas abaixo de 390 px no modo escuro foi removido.
+
+
+## Evolução V9
+
+- Backend Supabase `painel-ia` versão 6: saída longa, retry e fallback gratuito `gemini-3.8-flash → gemini-3.6-flash → gemini-3.5-flash-lite`.
+- Respostas comuns: até 8.192 tokens por padrão. Projetos: até 24.576 tokens, com continuação quando necessário.
+- Modo Projeto/App: instrui geração de HTML standalone completo, faz QA local e tenta reparo automático quando o projeto vem incompleto.
+- Projetos ficam salvos localmente e podem ser exportados em HTML, JSON ou ZIP. O ZIP é criado no navegador sem biblioteca paga ou serviço externo.
+- Pré-visualização em iframe sandbox.
+- Memória contextual agora seleciona memórias relacionadas ao pedido em vez de enviar tudo indiscriminadamente.
+- QA geral verifica placeholders, cercas de código, finalização, repetição anormal e tamanho.
+- QA de projetos verifica estrutura HTML, fechamento das tags, TODO/FIXME, CSS, cerca Markdown e sintaxe dos scripts inline não-module.
+- OpenAI continua manual e o bloqueio de multipass pago permanece ativo por padrão.
+
+Observação: o QA local detecta integridade estrutural, mas não substitui testes funcionais específicos de integrações externas.

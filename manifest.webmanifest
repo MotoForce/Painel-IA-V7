@@ -1,11 +1,11 @@
 {
-  "name": "INKIS IA V8.1 — Inteligência Estendida",
-  "short_name": "INKIS IA V8",
-  "description": "Painel de IA multiengine com Inteligência Estendida Local, memória, base contextual, revisão, QA, termos de uso e política de privacidade.",
+  "name": "INKIS IA V9 — Completo",
+  "short_name": "INKIS IA V9",
+  "description": "IA multiengine com respostas longas, fallback gratuito, geração/exportação de aplicativos, memória contextual e QA robusto.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#031124",
-  "theme_color": "#031124",
+  "background_color": "#080d17",
+  "theme_color": "#080d17",
   "icons": [
     {
       "src": "icons/icon-192.png",
