@@ -1,0 +1,11 @@
+JavaScript syntax: OK
+
+Theme QA:
+{
+  "dark_neutral_palette": true,
+  "adaptive_wordmark": true,
+  "light_theme_preserved": true,
+  "mobile_two_column_engines": true,
+  "extra_bottom_clearance": true,
+  "sw_cache_bumped": true
+}

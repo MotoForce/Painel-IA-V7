@@ -1,0 +1,10 @@
+JavaScript syntax: OK
+
+Legal QA:
+{
+  "copyright": true,
+  "terms_link": true,
+  "privacy_link": true,
+  "theme_compatible": true,
+  "cache_bumped": true
+}

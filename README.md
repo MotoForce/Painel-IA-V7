@@ -1,67 +1,94 @@
-# Painel de IA V7 — Multiengine
+# INKIS IA V8.1 — Inteligência Estendida Local
 
-Esta versão oferece três motores:
+A V8 amplia a qualidade das respostas sem depender de uma API paga por padrão.
 
-1. **Ollama local** — sem cobrança por token.
-2. **Google Gemini** — pelo backend Supabase; pode operar sem cobrança enquanto a conta estiver no Free Tier e dentro das cotas.
-3. **OpenAI** — opcional e somente manual; nunca é usada como fallback automático.
+## O que é “Inteligência Estendida”
 
-## Backend já atualizado
+Não é um novo modelo treinado. É uma camada de orquestração que melhora o uso dos modelos disponíveis através de:
 
-A Edge Function `painel-ia` do projeto Supabase `Painel-Lima-Virtual` foi atualizada para a arquitetura V7.
+- memória local controlada pelo usuário;
+- recuperação de conhecimento da biblioteca e anexos;
+- classificação local do tipo de tarefa;
+- múltiplas etapas de geração/revisão;
+- QA local heurístico;
+- roteamento multiengine;
+- bloqueio de multipass quando OpenAI paga estiver selecionada, por padrão.
 
-- `provider: auto` → Gemini somente quando configurado; não usa OpenAI.
-- `provider: gemini` → força Gemini.
-- `provider: openai` → força OpenAI.
-- Ollama é chamado diretamente pelo navegador, porque roda no equipamento/rede do usuário.
+## Modos
 
-## Ativar Gemini Free Tier
+### Rápido
+1 chamada ao modelo.
 
-No Supabase, abra **Edge Functions → Secrets** e adicione:
+### Profissional
+2 chamadas:
+1. geração;
+2. revisão silenciosa e resposta final.
 
-- `GEMINI_API_KEY` = sua chave do Google AI Studio
-- opcionalmente `GEMINI_MODEL` = `gemini-3.8-flash`
+### Profundo
+3 chamadas:
+1. plano conciso/checklist;
+2. resposta;
+3. refinamento final.
 
-A elegibilidade e as cotas gratuitas são controladas pelo Google e podem mudar. O painel exibe `R$ 0,00*` como indicação condicional, não como garantia de gratuidade.
+### Auditoria
+3 chamadas:
+1. resposta;
+2. auditoria concisa de falhas/omissões;
+3. correção final.
 
-## Ollama
+As etapas internas não são mostradas como cadeia de pensamento. O usuário recebe somente a resposta final.
 
-Endpoint padrão: `http://127.0.0.1:11434`.
+## Base de conhecimento local
 
-A V7 consulta `/api/tags` para localizar modelos instalados e usa `/api/chat` para as respostas.
+A biblioteca e os anexos são divididos em trechos localmente. A V8 faz uma busca lexical local e envia somente os trechos mais relacionados ao pedido. Não exige embeddings pagos.
 
-Exemplo:
+A busca lexical é útil, mas não é equivalente a um banco vetorial semântico. Para uma evolução futura, pode-se adicionar embeddings locais via Ollama.
 
-```text
-ollama pull gemma3:4b
-```
+## Memória local
 
-Depois, abra o painel, selecione **Ollama**, clique em **Testar Ollama** e escolha o modelo encontrado.
+As memórias são adicionadas e removidas manualmente pelo usuário e ficam no `localStorage` do navegador. A V8 não cria memórias ocultas automaticamente.
 
-### Android + computador
+## Política de custo
 
-O Android pode usar o Ollama que está rodando em outro computador da rede. Informe no painel o endereço, por exemplo `http://192.168.1.20:11434`.
+- Ollama local: sem cobrança por token.
+- Gemini: pode ser usado quando a conta estiver dentro da camada/cota gratuita aplicável.
+- OpenAI: opcional e potencialmente paga.
+- `Bloquear multipass pago` vem ativado. Se OpenAI estiver selecionada, modos Profissional/Profundo/Auditoria são reduzidos a uma única chamada para evitar multiplicar custos.
 
-O Ollama precisa estar configurado para escutar na rede local e permitir a origem web necessária. Restrinja o acesso à rede privada; não exponha a porta 11434 diretamente à internet.
+## QA local
 
-Uma página HTTPS pode bloquear chamadas diretas para um endpoint Ollama HTTP por mixed content. Nessa situação use Gemini ou coloque o Ollama atrás de HTTPS com autenticação e controles de rede adequados.
+O QA local faz verificações heurísticas sobre:
+- resposta não vazia;
+- ausência de placeholders;
+- ausência de algumas respostas genéricas;
+- ausência de promessas absolutas detectáveis;
+- tamanho controlado.
 
-## Windows
+O indicador `QA x/5` não é uma certificação de veracidade. É apenas um conjunto de verificações locais.
 
-A versão oficial atual do Ollama para Windows exige Windows 10 ou posterior. Para Windows 7, use o Gemini pelo painel ou execute Ollama em outro computador compatível.
+## Compatibilidade
 
-## Segurança
+O funcionamento multiengine existente da V7.1 foi preservado:
+- Ollama;
+- Gemini via Supabase;
+- OpenAI manual via Supabase;
+- modo Automático sem fallback pago.
 
-- `GEMINI_API_KEY` e `OPENAI_API_KEY` nunca ficam no HTML.
-- A Edge Function exige JWT válido do Supabase.
-- A chave publicável do Supabase fica no frontend, como previsto para clientes.
-- OpenAI nunca é fallback do modo Automático.
-- Histórico, preferências e estatísticas de sessão são mantidos localmente no navegador.
+## Privacidade
 
-## Teste de aceite
+Biblioteca, memórias, conversas e fluxos locais ficam no navegador. Ao usar um provedor em nuvem, o contexto selecionado para a resposta é enviado ao provedor correspondente.
 
-**Ollama:** iniciar Ollama → baixar modelo → Testar Ollama → enviar `Responda apenas: Ollama conectado`.
 
-**Gemini:** cadastrar `GEMINI_API_KEY` no Supabase → entrar no painel → selecionar Gemini → enviar `Responda apenas: Gemini conectado`.
+## Identificação autoral e documentos legais
 
-**Automático:** Ollama disponível deve ser priorizado; sem Ollama, deve usar Gemini; sem ambos, deve informar indisponibilidade. Nunca deve acionar OpenAI automaticamente.
+Copyright aplicado no rodapé:
+
+**© 2026 Nailson Lima. Todos os direitos reservados.**
+
+Foram incorporados ao próprio aplicativo:
+- Termos de Uso;
+- Política de Privacidade.
+
+Os dois documentos são acessíveis por links no rodapé e abrem em modais internos compatíveis com os modos claro e escuro.
+
+Observação: os textos são uma base operacional coerente com as funções atuais da aplicação. Caso o INKIS IA seja comercializado em escala, trate dados pessoais de terceiros, processe pagamentos, realize analytics ou passe a operar sob obrigações contratuais/regulatórias específicas, é recomendável revisão jurídica dos documentos.
