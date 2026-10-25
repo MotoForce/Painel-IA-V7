@@ -1,0 +1,11 @@
+JavaScript syntax: OK
+
+{
+  "auth_recovery": true,
+  "refresh_invalid_handling": true,
+  "status_login_distinction": true,
+  "relogin_button": true,
+  "ollama_mobile_preserved": true,
+  "v10_tools_preserved": true,
+  "legal_preserved": true
+}

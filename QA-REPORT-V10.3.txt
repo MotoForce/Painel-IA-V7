@@ -1,0 +1,24 @@
+INKIS IA V10.3 — Relatório de QA
+Data: 2026-10-25
+Base: INKIS IA V10.2 Auth Recovery
+
+VERIFICAÇÕES REALIZADAS
+PASSOU — JavaScript principal: node --check.
+PASSOU — JavaScript do service-worker: node --check.
+PASSOU — Manifesto PWA: JSON válido.
+PASSOU — Chromium headless via Playwright, conteúdo HTML carregado em page.set_content em viewport mobile 390x844, com localStorage simulado para permitir o teste em about:blank.
+PASSOU — Fluxo Prompt Lab > Construir > Copiar, simulando Clipboard API indisponível e document.execCommand('copy') bloqueado: abriu opção manual, botão Selecionar texto e botão Baixar TXT.
+PASSOU — Code QA com HTML original da legenda gerada pelo INKIS V10: detectou o risco de navigator.clipboard sem fallback (1 reprovação de 11 verificações).
+PASSOU — Code QA com HTML da legenda corrigida: 11/11 nas verificações estáticas e heurísticas.
+PASSOU — Sem erros JavaScript não tratados nos fluxos acima.
+
+LIMITAÇÕES
+- Não houve teste em Chrome Android físico; o navegador headless NÃO reproduz integralmente permissões de content://.
+- A infraestrutura de Chromium bloqueou navegação direta em file:// e HTTPS de teste. O smoke test foi feito por page.set_content e simulações controladas.
+- QA de aplicativos gerados continua estático/heurístico e não testa todos os botões automaticamente.
+- Integração online com Gemini/Supabase/Edge Function não foi exercitada nos testes desta alteração. Permaneceram preservadas na base.
+- Cópia automática não pode ser garantida quando o navegador bloqueia tanto a Clipboard API quanto execCommand. A interface então oferece seleção manual e exportação TXT.
+- QA 11/11 significa somente verificações estáticas, não conformidade funcional.
+
+CONCLUSÃO
+O defeito foi corrigido no INKIS IA (ferramentas próprias) e foi criada detecção preventiva no gerador/QA, com exigências reforçadas para projetos futuros. Validação final em Android físico e da API deve ser realizada após implantação.
