@@ -1,0 +1,21 @@
+{
+  "name": "INKIS IA V10.1 — Ollama Mobile Ready",
+  "short_name": "INKIS IA V10.1",
+  "description": "INKIS IA com configuração assistida do Ollama para Android e rede local.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#080d17",
+  "theme_color": "#080d17",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
