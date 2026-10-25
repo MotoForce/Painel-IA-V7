@@ -1,0 +1,15 @@
+JavaScript syntax: OK
+
+V8.3 Layout QA:
+{
+  "global_overflow_protection": true,
+  "safe_area_bottom": true,
+  "grid_minmax": true,
+  "narrow_engines_one_column": true,
+  "old_dark_conflict_removed": true,
+  "nav_labels_not_fixed_70": true,
+  "modal_100dvh": true,
+  "legal_preserved": true,
+  "light_theme_preserved": true,
+  "resilience_preserved": true
+}
